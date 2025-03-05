@@ -3,69 +3,576 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Dating Simulator</title>
+    <title>DateTrainer | Practice Your Dating App Skills</title>
+    <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="app-container">
-        <!-- Header Section -->
-        <header>
-            <h1>AI Dating Simulator</h1>
-            <div class="score-display">Score: <span id="score">0</span></div>
-        </header>
+        <!-- Top Navigation Bar -->
+        <nav class="main-nav">
+            <div class="site-logo">
+                <img src="images/logo.png" alt="DateTrainer Logo" class="logo-img">
+                <div class="nav-logo">DateTrainer</div>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="active" id="nav-discover"><i class="fas fa-search"></i> Browse</a>
+                <a href="#" id="nav-messages"><i class="fas fa-envelope"></i> Messages <span class="message-badge">0</span></a>
+                <a href="#" id="nav-profile"><i class="fas fa-user"></i> My Profile</a>
+            </div>
+            <div class="nav-settings">
+                <button id="settings-btn"><i class="fas fa-cog"></i></button>
+                <div class="user-menu-toggle">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-        <!-- Main App Interface -->
-        <main>
-            <!-- Onboarding & Tutorial Section -->
-            <section id="onboarding" class="screen active">
-                <h2>Welcome to Dating Simulator</h2>
-                <p>Practice your dating app conversation skills in a safe environment.</p>
-                <button id="start-btn" class="primary-btn">Get Started</button>
-            </section>
-
-            <!-- Profile Selection Screen -->
-            <section id="profile-selection" class="screen">
-                <h2>Choose a Profile</h2>
-                <div id="profiles-container" class="profiles-grid">
-                    <!-- Profiles will be generated here -->
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Onboarding Screen -->
+            <section id="onboarding-screen" class="screen">
+                <div class="onboarding-content">
+                    <h1>Welcome to DateTrainer</h1>
+                    <p>Practice your dating app messaging skills in a realistic environment.</p>
+                    <p class="subtext">Experience the real challenges of online dating without the pressure.</p>
+                    <div class="features-grid">
+                        <div class="feature">
+                            <div class="feature-icon"><i class="fas fa-comment"></i></div>
+                            <div class="feature-text">Practice conversations with realistic female profiles</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                            <div class="feature-text">Get feedback on your messaging approach</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon"><i class="fas fa-user-friends"></i></div>
+                            <div class="feature-text">Learn what works and what doesn't</div>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon"><i class="fas fa-heart"></i></div>
+                            <div class="feature-text">Improve your success in real-world dating apps</div>
+                        </div>
+                    </div>
+                    <button id="start-btn" class="primary-btn">Get Started</button>
+                    <p class="disclaimer">This is a training simulator. All profiles are AI-generated and not real people.</p>
                 </div>
             </section>
 
-            <!-- Chat Interface -->
-            <section id="chat-interface" class="screen">
-                <div class="chat-header">
-                    <button id="back-btn">←</button>
-                    <div class="profile-info">
-                        <img id="chat-profile-pic" src="images/placeholder.jpg" alt="Profile Picture">
-                        <div>
-                            <h3 id="chat-profile-name">Name</h3>
-                            <p id="chat-profile-status">Online</p>
+            <!-- Main Browse Screen (Discover) -->
+            <section id="discover-screen" class="screen">
+                <div class="discover-container">
+                    <!-- Left Sidebar - Filter Panel -->
+                    <div class="filter-sidebar">
+                        <div class="filter-section">
+                            <h3>Search Filters</h3>
+                            <div class="filter-group">
+                                <label>Age Range</label>
+                                <div class="range-slider">
+                                    <div class="slider-values">
+                                        <span id="age-min">18</span> - <span id="age-max">45</span>
+                                    </div>
+                                    <input type="range" min="18" max="65" value="18" class="slider" id="age-slider-min">
+                                    <input type="range" min="18" max="65" value="45" class="slider" id="age-slider-max">
+                                </div>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label>Distance</label>
+                                <select id="distance-filter">
+                                    <option value="5">5 miles</option>
+                                    <option value="10">10 miles</option>
+                                    <option value="25" selected>25 miles</option>
+                                    <option value="50">50 miles</option>
+                                    <option value="100">100 miles</option>
+                                    <option value="any">Any distance</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label>Last Active</label>
+                                <select id="active-filter">
+                                    <option value="1">Within 1 day</option>
+                                    <option value="7" selected>Within 1 week</option>
+                                    <option value="30">Within 1 month</option>
+                                    <option value="any">Any time</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label>Interests</label>
+                                <div class="interest-filter-tags">
+                                    <!-- Will be populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <h3>Response Likelihood</h3>
+                            <div class="filter-group">
+                                <select id="response-filter">
+                                    <option value="any" selected>Any response rate</option>
+                                    <option value="high">Higher chance (15%+)</option>
+                                    <option value="medium">Medium chance (5-15%)</option>
+                                    <option value="low">Low chance (< 5%)</option>
+                                </select>
+                                <p class="filter-note">Note: Like real dating apps, most profiles have a low response rate.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-actions">
+                            <button id="apply-filters" class="primary-btn">Apply Filters</button>
+                            <button id="reset-filters" class="secondary-btn">Reset</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Main Content - Profiles Grid -->
+                    <div class="profiles-wrapper">
+                        <div class="search-container">
+                            <div class="search-bar">
+                                <input type="text" id="search-input" placeholder="Search profiles...">
+                                <button id="search-btn"><i class="fas fa-search"></i></button>
+                            </div>
+                            <div class="sort-options">
+                                <label>Sort by:</label>
+                                <select id="sort-profiles">
+                                    <option value="recent">Recently active</option>
+                                    <option value="age_asc">Age: Youngest first</option>
+                                    <option value="age_desc">Age: Oldest first</option>
+                                    <option value="distance">Distance: Closest first</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="profiles-grid" id="profiles-grid">
+                            <!-- Profiles will be dynamically generated here -->
+                            <div class="loading-profiles">
+                                <div class="loading-spinner"></div>
+                                <p>Loading profiles...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="pagination">
+                            <button id="prev-page" disabled><i class="fas fa-chevron-left"></i> Previous</button>
+                            <span id="page-indicator">Page 1 of 1</span>
+                            <button id="next-page">Next <i class="fas fa-chevron-right"></i></button>
                         </div>
                     </div>
                 </div>
-                
-                <div id="chat-messages" class="chat-messages">
-                    <!-- Messages will appear here -->
+            </section>
+
+            <!-- Profile Detail Screen -->
+            <section id="profile-detail-screen" class="screen">
+                <div class="profile-detail-container">
+                    <div class="profile-detail-header">
+                        <button class="back-btn"><i class="fas fa-arrow-left"></i> Back to Browse</button>
+                        <div class="profile-actions">
+                            <button class="action-btn like-btn" title="Like Profile"><i class="fas fa-heart"></i></button>
+                            <button class="action-btn message-btn" title="Send Message"><i class="fas fa-comment"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-detail-content">
+                        <div class="profile-photos-section">
+                            <div class="profile-photos-slider" id="profile-photos">
+                                <!-- Photos will be dynamically generated -->
+                                <img src="images/placeholder.jpg" alt="Profile Photo">
+                            </div>
+                            
+                            <div class="photo-navigation">
+                                <button class="photo-nav-btn prev-photo"><i class="fas fa-chevron-left"></i></button>
+                                <div class="photo-indicators">
+                                    <span class="photo-dot active"></span>
+                                    <span class="photo-dot"></span>
+                                    <span class="photo-dot"></span>
+                                </div>
+                                <button class="photo-nav-btn next-photo"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-info-card">
+                            <div class="profile-basic-info">
+                                <h2 id="detail-name">Name, Age</h2>
+                                <p id="detail-location"><i class="fas fa-map-marker-alt"></i> Location</p>
+                                <p id="detail-active"><i class="fas fa-circle"></i> Last active 2 days ago</p>
+                            </div>
+                            
+                            <div class="profile-bio">
+                                <h3>About Me</h3>
+                                <p id="detail-bio">Bio text will appear here...</p>
+                            </div>
+                            
+                            <div class="profile-interests">
+                                <h3>Interests</h3>
+                                <div class="interests-tags" id="detail-interests">
+                                    <!-- Interest tags will be dynamically generated -->
+                                </div>
+                            </div>
+                            
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Response Rate</span>
+                                    <div class="stat-bar">
+                                        <div class="stat-fill" id="response-rate-fill" style="width: 25%;"></div>
+                                    </div>
+                                    <span class="stat-value" id="response-rate-value">25%</span>
+                                </div>
+                                
+                                <div class="compatibility">
+                                    <h3>Response Time</h3>
+                                    <p id="response-time">Typically responds within 1-2 days</p>
+                                </div>
+                            </div>
+                            
+                            <div class="message-action">
+                                <button id="detail-message-btn" class="primary-btn"><i class="fas fa-comment"></i> Send Message</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="message-input">
-                    <input type="text" id="message-text" placeholder="Type a message...">
-                    <button id="send-btn">Send</button>
+            </section>
+
+            <!-- Messages Screen -->
+            <section id="messages-screen" class="screen">
+                <div class="messages-container">
+                    <div class="conversations-list">
+                        <div class="conversations-header">
+                            <h2>Messages</h2>
+                            <div class="conversations-actions">
+                                <button id="refresh-messages"><i class="fas fa-sync-alt"></i></button>
+                                <select id="filter-conversations">
+                                    <option value="all">All Messages</option>
+                                    <option value="active">Active</option>
+                                    <option value="unread">Unread</option>
+                                    <option value="no-response">No Response</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="conversations" id="conversations-list">
+                            <!-- Will be populated with conversation items -->
+                            <div class="empty-conversations">
+                                <div class="empty-icon"><i class="fas fa-inbox"></i></div>
+                                <p>You don't have any messages yet</p>
+                                <p class="empty-subtext">Start a conversation by browsing profiles</p>
+                                <button id="browse-profiles-btn" class="secondary-btn">Browse Profiles</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="chat-header" id="chat-header">
+                            <div class="chat-profile-info">
+                                <img src="images/placeholder.jpg" alt="Profile" id="chat-profile-img">
+                                <div>
+                                    <h3 id="chat-profile-name">Name</h3>
+                                    <p id="chat-profile-status">Last active 2h ago</p>
+                                </div>
+                            </div>
+                            <div class="chat-actions">
+                                <button class="profile-btn" title="View Profile"><i class="fas fa-user"></i></button>
+                                <button class="unmatch-btn" title="Unmatch"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-messages" id="chat-messages">
+                            <!-- Empty state -->
+                            <div class="empty-chat">
+                                <div class="empty-chat-icon"><i class="fas fa-comment-dots"></i></div>
+                                <p>Start the conversation</p>
+                                <p class="empty-chat-subtitle">Send a message to begin chatting</p>
+                            </div>
+                            
+                            <!-- Messages will appear here -->
+                        </div>
+                        
+                        <div class="chat-input">
+                            <textarea id="message-input" placeholder="Type a message..."></textarea>
+                            <button id="send-message-btn"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                        
+                        <!-- Read receipts info -->
+                        <div class="read-receipts-info">
+                            <i class="fas fa-check"></i> Sent
+                            <i class="fas fa-check-double"></i> Delivered
+                            <i class="fas fa-check-double" style="color: #4CAF50;"></i> Read
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Profile Screen -->
+            <section id="user-profile-screen" class="screen">
+                <div class="user-profile-container">
+                    <h2>Your Profile</h2>
+                    <p class="profile-subtitle">Complete your profile to get the most out of DateTrainer</p>
+                    
+                    <div class="profile-edit-section">
+                        <div class="profile-photo-column">
+                            <div class="profile-photo-upload">
+                                <div class="profile-photo-preview" id="profile-photo-preview">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <button class="upload-btn"><i class="fas fa-camera"></i> Upload Photo</button>
+                            </div>
+                            
+                            <div class="performance-stats">
+                                <h3>Your Stats</h3>
+                                <div class="stats-grid">
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="stat-messages-sent">0</div>
+                                        <div class="stat-label">Messages Sent</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="stat-response-rate">0%</div>
+                                        <div class="stat-label">Response Rate</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="stat-conversations">0</div>
+                                        <div class="stat-label">Conversations</div>
+                                    </div>
+                                    <div class="stat-card">
+                                        <div class="stat-value" id="stat-dates">0</div>
+                                        <div class="stat-label">Dates Arranged</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-form">
+                            <div class="form-section">
+                                <h3>Basic Information</h3>
+                                <div class="form-group">
+                                    <label for="user-name">Name</label>
+                                    <input type="text" id="user-name" placeholder="Your name">
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="user-age">Age</label>
+                                        <input type="number" id="user-age" min="18" max="99" placeholder="Age">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="user-location">Location</label>
+                                        <input type="text" id="user-location" placeholder="City, State">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="user-bio">About Me</label>
+                                    <textarea id="user-bio" rows="4" placeholder="Tell matches about yourself..."></textarea>
+                                    <div class="bio-counter"><span id="bio-char-count">0</span>/500 characters</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3>Your Interests</h3>
+                                <p class="form-hint">Select interests that you'd like to share on your profile</p>
+                                <div class="interests-selector" id="interests-selector">
+                                    <!-- Interest options will be generated here -->
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3>Dating Preferences</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="pref-age-min">Age Range</label>
+                                        <div class="range-inputs">
+                                            <input type="number" id="pref-age-min" min="18" max="65" value="18" placeholder="Min">
+                                            <span>to</span>
+                                            <input type="number" id="pref-age-max" min="18" max="65" value="45" placeholder="Max">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="pref-distance">Distance</label>
+                                        <select id="pref-distance">
+                                            <option value="5">5 miles</option>
+                                            <option value="10">10 miles</option>
+                                            <option value="25" selected>25 miles</option>
+                                            <option value="50">50 miles</option>
+                                            <option value="100">100 miles</option>
+                                            <option value="any">Any distance</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="primary-btn save-profile-btn">Save Profile</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Screen -->
+            <section id="settings-screen" class="screen">
+                <div class="settings-container">
+                    <div class="settings-header">
+                        <button class="back-btn"><i class="fas fa-arrow-left"></i></button>
+                        <h2>Settings</h2>
+                    </div>
+                    
+                    <div class="settings-content">
+                        <div class="settings-group">
+                            <h3>API Settings</h3>
+                            <div class="setting-item">
+                                <label for="openrouter-api-key">OpenRouter API Key</label>
+                                <input type="password" id="openrouter-api-key" placeholder="Enter your OpenRouter API key">
+                                <button class="small-btn" id="update-api-key">Update</button>
+                            </div>
+                            <div class="setting-item">
+                                <label for="google-sheet-url">Google Sheet URL</label>
+                                <input type="text" id="google-sheet-url" placeholder="Enter published Google Sheet URL">
+                                <button class="small-btn" id="update-sheet-url">Update</button>
+                            </div>
+                            <div class="setting-item">
+                                <label for="ai-model">AI Model</label>
+                                <select id="ai-model">
+                                    <option value="openai/gpt-3.5-turbo">GPT-3.5 Turbo (Fastest)</option>
+                                    <option value="openai/gpt-4o-mini">GPT-4o Mini (Good balance)</option>
+                                    <option value="anthropic/claude-instant-1">Claude Instant (Good personality)</option>
+                                    <option value="google/palm-2-chat-bison">PaLM 2 Chat</option>
+                                    <option value="meta-llama/llama-2-13b-chat">Llama 2</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <h3>Simulator Settings</h3>
+                            <div class="setting-item">
+                                <label for="difficulty">Difficulty Level</label>
+                                <select id="difficulty">
+                                    <option value="easy">Easy - Higher response rates</option>
+                                    <option value="medium" selected>Medium - Realistic response rates</option>
+                                    <option value="hard">Hard - Low response rates (very realistic)</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label for="time-simulation">Time Simulation</label>
+                                <select id="time-simulation">
+                                    <option value="real">Real Time (hours/days)</option>
+                                    <option value="accelerated" selected>Accelerated (1 day = 5 minutes)</option>
+                                    <option value="instant">Instant Responses (for practice)</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label for="read-receipts">Read Receipts</label>
+                                <select id="read-receipts">
+                                    <option value="on" selected>On - Show read status</option>
+                                    <option value="off">Off - Don't show read status</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <h3>Display Settings</h3>
+                            <div class="setting-item">
+                                <label for="theme-setting">Theme</label>
+                                <select id="theme-setting">
+                                    <option value="light" selected>Light</option>
+                                    <option value="dark">Dark</option>
+                                </select>
+                            </div>
+                            <div class="setting-item checkbox-setting">
+                                <label for="animations-setting">Enable animations</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="animations-setting" checked>
+                                    <span class="toggle-slider"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <h3>Data Management</h3>
+                            <div class="setting-item buttons-row">
+                                <button class="danger-btn" id="reset-data">Reset All Data</button>
+                                <button class="primary-btn" id="export-data">Export My Data</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <!-- Feedback Screen -->
             <section id="feedback-screen" class="screen">
-                <h2>Chat Analysis</h2>
-                <div id="feedback-content"></div>
-                <button id="continue-btn" class="primary-btn">Continue</button>
+                <div class="feedback-container">
+                    <div class="feedback-header">
+                        <button class="back-btn"><i class="fas fa-arrow-left"></i></button>
+                        <h2>Conversation Analysis</h2>
+                    </div>
+                    
+                    <div class="feedback-content" id="feedback-content">
+                        <!-- Feedback content will be generated here -->
+                        <div class="feedback-section">
+                            <h3>Score: 45</h3>
+                            <p>Here's how your conversation went:</p>
+                        </div>
+                        
+                        <div class="feedback-section">
+                            <h3>Feedback:</h3>
+                            <div class="feedback-item positive">
+                                <div class="feedback-points positive">+15</div>
+                                <div class="feedback-message">You asked good questions</div>
+                            </div>
+                            <div class="feedback-item negative">
+                                <div class="feedback-points negative">-10</div>
+                                <div class="feedback-message">Messages were too short</div>
+                            </div>
+                            <div class="feedback-item positive">
+                                <div class="feedback-points positive">+20</div>
+                                <div class="feedback-message">You mentioned shared interests</div>
+                            </div>
+                            <div class="feedback-item neutral">
+                                <div class="feedback-points neutral">0</div>
+                                <div class="feedback-message">You proposed a date but they didn't accept</div>
+                            </div>
+                        </div>
+                        
+                        <div class="feedback-section">
+                            <h3>Tips for improvement:</h3>
+                            <ul>
+                                <li>Try to write more detailed messages</li>
+                                <li>Build more rapport before asking for a date</li>
+                                <li>Ask more about their interests mentioned in their profile</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="feedback-actions">
+                        <button class="primary-btn" id="continue-btn">Continue</button>
+                    </div>
+                </div>
             </section>
         </main>
     </div>
 
+    <!-- Modal for notifications and confirmations -->
+    <div class="modal" id="notification-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Notification</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                Message content here
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn cancel-btn">Cancel</button>
+                <button class="primary-btn confirm-btn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/google-sheets-api.js"></script>
     <script src="js/personas.js"></script>
     <script src="js/chat.js"></script>
+    <script src="js/ui.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
